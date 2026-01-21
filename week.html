@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Week Assignment | Not Started Yet</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --neon-cyan: #00f0ff;
+      --neon-blue: #0080ff;
+      --dark-bg: #0a0e1a;
+      --dark-card: #131824;
+    }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background-color: var(--dark-bg);
+      color: #e2e8f0;
+    }
+
+    h1,h2,h3,h4,h5,h6 {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .tech-lines {
+      background-image:
+        linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    .glow-cyan {
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(0, 240, 255, 0.1);
+    }
+
+    .gradient-border {
+      position: relative;
+      background: linear-gradient(135deg, var(--dark-card), var(--dark-card));
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+      border-radius: inherit;
+      z-index: -1;
+      opacity: 0.25;
+      transition: opacity 0.3s;
+    }
+
+    .gradient-border:hover::before {
+      opacity: 0.7;
+    }
+
+    .smooth-transition {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hover-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.5), 0 0 50px rgba(0, 240, 255, 0.2);
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+  </style>
+</head>
+
+<body class="tech-lines">
+
+  <!-- NAV -->
+  <nav class="sticky top-0 z-50 backdrop-blur-md bg-slate-900/90 border-b border-cyan-500/20">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="./index.html" class="flex items-center space-x-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-lg flex items-center justify-center glow-cyan">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+          </svg>
+        </div>
+        <span class="text-xl font-bold text-cyan-400">RoboTech</span>
+      </a>
+
+      <a href="./index.html#assignments"
+        class="px-4 py-2 bg-transparent border-2 border-cyan-500/40 text-cyan-300 font-semibold rounded-lg hover:bg-cyan-500/10 smooth-transition">
+        ⬅ Back to Assignments
+      </a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <section class="min-h-screen flex items-center px-4 py-14">
+    <div class="container mx-auto max-w-4xl">
+      <div class="gradient-border rounded-3xl p-10 hover-glow smooth-transition">
+        <div class="text-center">
+          <div class="mx-auto w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center glow-cyan mb-6">
+            <svg class="w-10 h-10 text-white animate-pulse-glow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+
+          <h1 class="text-3xl md:text-5xl font-black text-white leading-tight">
+            This Week Assignment is
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+              Not Started Yet
+            </span>
+          </h1>
+
+          <p class="text-gray-400 text-lg mt-4 max-w-2xl mx-auto">
+            The content for this week is not available right now.  
+            Please wait until the host updates it soon once it is completed ✅
+          </p>
+
+          <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="./index.html#assignments"
+              class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-lg hover-glow smooth-transition text-center">
+              Go Back
+            </a>
+            <a href="./index.html#contact"
+              class="px-8 py-3 bg-transparent border-2 border-cyan-500/50 text-cyan-300 font-bold rounded-lg hover:bg-cyan-500/10 smooth-transition text-center">
+              Contact / Ask Bot
+            </a>
+          </div>
+
+          <!-- STATUS BOXES -->
+          <div class="grid sm:grid-cols-3 gap-4 mt-10">
+            <div class="bg-slate-900/40 border border-cyan-500/20 rounded-xl p-4">
+              <p class="text-gray-400 text-sm mb-1">Status</p>
+              <p class="text-yellow-300 font-bold">Pending ⏳</p>
+            </div>
+            <div class="bg-slate-900/40 border border-blue-500/20 rounded-xl p-4">
+              <p class="text-gray-400 text-sm mb-1">Availability</p>
+              <p class="text-cyan-300 font-bold">Waiting Update</p>
+            </div>
+            <div class="bg-slate-900/40 border border-cyan-500/20 rounded-xl p-4">
+              <p class="text-gray-400 text-sm mb-1">Next Step</p>
+              <p class="text-green-300 font-bold">Will be Updated ✅</p>
+            </div>
+          </div>
+
+          <div class="mt-8 bg-cyan-500/10 border border-cyan-500/25 rounded-xl p-5 text-left">
+            <h3 class="text-white font-bold mb-2">📌 Note for Faculty</h3>
+            <p class="text-gray-300 text-sm leading-relaxed">
+              This week assignment page is created in advance to maintain consistent alignment and structure.
+              Once the content is given, I will update this page with the required assignment proof (PDF, images, and videos).
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <p class="text-center text-gray-500 text-sm mt-8">
+        © 2026 Robotics Student Portfolio | RoboTech Theme
+      </p>
+    </div>
+  </section>
+
+</body>
+</html>

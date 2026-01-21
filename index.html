@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Robotics</title>
+   
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+   
+    <!-- Google Fonts - Futuristic Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+   
+    <style>
+        /* Custom CSS Variables for Theming */
+        :root {
+            --neon-cyan: #00f0ff;
+            --neon-blue: #0080ff;
+            --dark-bg: #0a0e1a;
+            --dark-card: #131824;
+            --dark-border: #1e293b;
+        }
+       
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: #e2e8f0;
+        }
+       
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+        }
+       
+        /* Glowing Effects */
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(0, 240, 255, 0.1);
+        }
+       
+        .glow-cyan-strong {
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.6), 0 0 60px rgba(0, 240, 255, 0.3);
+        }
+       
+        .glow-blue {
+            box-shadow: 0 0 20px rgba(0, 128, 255, 0.3), 0 0 40px rgba(0, 128, 255, 0.1);
+        }
+       
+        /* Hover Transitions */
+        .smooth-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+       
+        .hover-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.5), 0 0 50px rgba(0, 240, 255, 0.2);
+        }
+       
+        /* Tech Lines Background */
+        .tech-lines {
+            background-image:
+                linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+       
+        /* Animated Gradient Border */
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(135deg, var(--dark-card), var(--dark-card));
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+       
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+       
+        .gradient-border:hover::before {
+            opacity: 0.8;
+        }
+       
+        /* Pulse Animation */
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+       
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+       
+        /* Scan Line Effect */
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+       
+        .scan-line {
+            position: relative;
+            overflow: hidden;
+        }
+       
+        .scan-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            animation: scan 3s linear infinite;
+        }
+    </style>
+</head>
+<body class="tech-lines">
+    <!-- ==================== NAVBAR (Sticky) ==================== -->
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-slate-900/90 border-b border-cyan-500/20">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-lg flex items-center justify-center glow-cyan">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-cyan-400">RoboTech</span>
+                </div>
+               
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-300 hover:text-cyan-400 smooth-transition font-medium">Home</a>
+                    <a href="#about" class="text-gray-300 hover:text-cyan-400 smooth-transition font-medium">About Robotics</a>
+                    <a href="#assignments" class="text-gray-300 hover:text-cyan-400 smooth-transition font-medium">Weekly Assignments</a>
+                    <a href="#contact" class="text-gray-300 hover:text-cyan-400 smooth-transition font-medium">Contact Us</a>
+                </div>
+               
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-cyan-400 hover:text-cyan-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+           
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="#home" class="block text-gray-300 hover:text-cyan-400 py-2 smooth-transition">Home</a>
+                <a href="#about" class="block text-gray-300 hover:text-cyan-400 py-2 smooth-transition">About Robotics</a>
+                <a href="#assignments" class="block text-gray-300 hover:text-cyan-400 py-2 smooth-transition">Weekly Assignments</a>
+                <a href="#contact" class="block text-gray-300 hover:text-cyan-400 py-2 smooth-transition">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+    <!-- ==================== HERO SECTION ==================== -->
+    <section id="home" class="min-h-screen flex items-center py-20 px-4">
+        <div class="container mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="space-y-6 animate-fade-in">
+                    <div class="inline-block px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full">
+                        <span class="text-cyan-400 text-sm font-medium">🤖 Course 2026</span>
+                    </div>
+                   
+                    <h1 class="text-5xl md:text-7xl font-black text-white leading-tight">
+                        Introduction to
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+                            Robotics
+                        </span>
+                    </h1>
+                   
+                    <p class="text-xl text-gray-400 leading-relaxed">
+                        Learn the basics of robots, sensors, actuators, and automation. Master the fundamentals of intelligent machine design.
+                    </p>
+                   
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <a href="#assignments" class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-lg hover-glow smooth-transition text-center">
+                            View Weekly Assignments
+                        </a>
+                        <a href="#contact" class="px-8 py-4 bg-transparent border-2 border-cyan-500/50 text-cyan-400 font-bold rounded-lg hover:bg-cyan-500/10 smooth-transition text-center">
+                            Contact Us
+                        </a>
+                        <a href=./aboutme.html class="px-8 py-4 bg-transparent border-2 border-cyan-500/50 text-cyan-400 font-bold rounded-lg hover:bg-cyan-500/10 smooth-transition text-center">
+                            About me
+                        </a>
+                    </div>
+                </div>
+               
+                <!-- Right - Robot Panel UI Card -->
+                <div class="relative">
+                    <div class="gradient-border rounded-2xl p-8 scan-line">
+                        <div class="space-y-6">
+                            <!-- Header -->
+                            <div class="flex items-center justify-between border-b border-cyan-500/30 pb-4">
+                                <h3 class="text-xl font-bold text-cyan-400">ROBOT CONTROL PANEL</h3>
+                                <div class="flex space-x-2">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse-glow"></div>
+                                    <div class="w-3 h-3 bg-cyan-500 rounded-full animate-pulse-glow" style="animation-delay: 0.5s"></div>
+                                    <div class="w-3 h-3 bg-blue-500 rounded-full animate-pulse-glow" style="animation-delay: 1s"></div>
+                                </div>
+                            </div>
+                           
+                            <!-- Stats Grid -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-slate-800/50 p-4 rounded-lg border border-cyan-500/20">
+                                    <div class="text-cyan-400 text-sm mb-1">Power Status</div>
+                                    <div class="text-2xl font-bold">98.5%</div>
+                                </div>
+                                <div class="bg-slate-800/50 p-4 rounded-lg border border-blue-500/20">
+                                    <div class="text-blue-400 text-sm mb-1">CPU Load</div>
+                                    <div class="text-2xl font-bold">47.2%</div>
+                                </div>
+                                <div class="bg-slate-800/50 p-4 rounded-lg border border-cyan-500/20">
+                                    <div class="text-cyan-400 text-sm mb-1">Sensors</div>
+                                    <div class="text-2xl font-bold">6/6</div>
+                                </div>
+                                <div class="bg-slate-800/50 p-4 rounded-lg border border-blue-500/20">
+                                    <div class="text-blue-400 text-sm mb-1">Actuators</div>
+                                    <div class="text-2xl font-bold">4/4</div>
+                                </div>
+                            </div>
+                           
+                            <!-- Progress Bars -->
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-400">Motor 1</span>
+                                        <span class="text-cyan-400">85%</span>
+                                    </div>
+                                    <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 glow-cyan" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-400">Motor 2</span>
+                                        <span class="text-cyan-400">62%</span>
+                                    </div>
+                                    <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 glow-cyan" style="width: 62%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-400">Servo Array</span>
+                                        <span class="text-cyan-400">91%</span>
+                                    </div>
+                                    <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 glow-cyan" style="width: 91%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            <!-- System Status -->
+                            <div class="bg-gradient-to-br from-cyan-500/10 to-blue-600/10 p-4 rounded-lg border border-cyan-500/30">
+                                <div class="flex items-center space-x-2">
+                                    <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="text-sm text-gray-300">All systems operational</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <!-- Decorative Elements -->
+                    <div class="absolute -top-4 -right-4 w-24 h-24 bg-cyan-500/20 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-600/20 rounded-full blur-3xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ==================== ABOUT ROBOTICS SECTION ==================== -->
+    <section id="about" class="py-20 px-4 bg-slate-900/50">
+        <div class="container mx-auto max-w-6xl">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    About <span class="text-cyan-400">Robotics</span>
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mx-auto mb-8"></div>
+            </div>
+           
+            <!-- Description -->
+            <div class="bg-slate-800/30 border border-cyan-500/20 rounded-2xl p-8 mb-12 glow-cyan">
+                <p class="text-lg text-gray-300 leading-relaxed text-center">
+                    Robotics is the field of engineering that combines mechanical design, electronics, control systems, and programming to build intelligent machines. Robots are used in industries like manufacturing, healthcare, space exploration, defense, and smart automation to improve efficiency and safety.
+                </p>
+            </div>
+           
+            <!-- Cards Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1: Sensors -->
+                <div class="gradient-border rounded-xl p-6 hover-glow smooth-transition group">
+                    <div class="w-14 h-14 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-lg flex items-center justify-center mb-4 glow-cyan group-hover:glow-cyan-strong smooth-transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Sensors</h3>
+                    <p class="text-gray-400 text-sm">Devices that detect environmental changes like distance, light, temperature, and pressure.</p>
+                </div>
+               
+                <!-- Card 2: Actuators -->
+                <div class="gradient-border rounded-xl p-6 hover-glow smooth-transition group">
+                    <div class="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center mb-4 glow-blue group-hover:glow-cyan-strong smooth-transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Actuators</h3>
+                    <p class="text-gray-400 text-sm">Components that enable movement through motors, servos, and hydraulic systems.</p>
+                </div>
+               
+                <!-- Card 3: Controllers -->
+                <div class="gradient-border rounded-xl p-6 hover-glow smooth-transition group">
+                    <div class="w-14 h-14 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-lg flex items-center justify-center mb-4 glow-cyan group-hover:glow-cyan-strong smooth-transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Controllers</h3>
+                    <p class="text-gray-400 text-sm">Microcontrollers and processors that execute commands and manage robot operations.</p>
+                </div>
+               
+                <!-- Card 4: AI + Automation -->
+                <div class="gradient-border rounded-xl p-6 hover-glow smooth-transition group">
+                    <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center mb-4 glow-blue group-hover:glow-cyan-strong smooth-transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">AI + Automation</h3>
+                    <p class="text-gray-400 text-sm">Intelligent algorithms that enable decision-making, learning, and autonomous behavior.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ==================== WEEKLY ASSIGNMENTS SECTION ==================== -->
+    <section id="assignments" class="py-20 px-4">
+        <div class="container mx-auto max-w-7xl">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    Weekly <span class="text-cyan-400">Assignments</span>
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mx-auto mb-6"></div>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Complete these weekly assignments to master robotics fundamentals.
+                </p>
+            </div>
+           
+            <!-- Assignments Grid -->
+            <!-- ✅ NOTE: You can easily update weekly assignment links by changing the href="#" to your actual link -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+               
+                <!-- Week 1 -->
+                <div class="gradient-border rounded-xl p-6 hover-glow smooth-transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-sm font-bold rounded-full">Week 1</span>
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse-glow"></div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Introduction + Types of Robots</h3>
+                    <p class="text-gray-400 text-sm mb-4">Learn about different robot classifications and their applications in various industries.</p>
+                    <a href="./week1assig.html" class="inline-block px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-lg hover-glow smooth-transition text-sm">
+                        Open Assignment
+                    </a>
+                </div>
+               
+                <!-- Week 2 -->
+                <div class="gradient-border rounded-xl p-6 hover-glow smooth-transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-sm font-bold rounded-full">Week 2</span>
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse-glow"></div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">YET TO START</h3>
+                    <p class="text-gray-400 text-sm mb-4">Please wait until host gets update.</p>
+                    <a href="./week.html" class="inline-block px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-lg hover-glow smooth-transition text-sm">
+                        Open Assignment
+                    </a>
+                </div>
+               
+                <!-- Week 3 -->
+                <div class="gradient-border rounded-xl p-6 hover-glow smooth-transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-sm font-bold rounded-full">Week 3</span>
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse-glow"></div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">YET TO START</h3>
+                    <p class="text-gray-400 text-sm mb-4">Please wait until host gets update.</p>
+                    <a href="./week.html" class="inline-block px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-lg hover-glow smooth-transition text-sm">
+                        Open Assignment
+                    </a>
+                </div>
+               
+                <!-- Week 4 -->
+                <div class="gradient-border rounded-xl p-6 hover-glow smooth-transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-sm font-bold rounded-full">Week 4</span>
+                        <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse-glow"></div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">YET TO START</h3>
+                    <p class="text-gray-400 text-sm mb-4">Please wait until host gets update.</p>
+                    <a href="./week.html" class="inline-block px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-lg hover-glow smooth-transition text-sm">
+                        Download Materials
+                    </a>
+                </div>
+               
+                <!-- Week 5 -->
+                <div class="gradient-border rounded-xl p-6 hover-glow smooth-transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-sm font-bold rounded-full">Week 5</span>
+                        <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse-glow"></div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">YET TO START</h3>
+                    <p class="text-gray-400 text-sm mb-4">Please wait until host gets update.</p>
+                    <a href="./week.html" class="inline-block px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-lg hover-glow smooth-transition text-sm">
+                        Download Materials
+                    </a>
+                </div>
+               
+                <!-- Week 6 -->
+                <div class="gradient-border rounded-xl p-6 hover-glow smooth-transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-sm font-bold rounded-full">Week 6</span>
+                        <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse-glow"></div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">YET TO START</h3>
+                    <p class="text-gray-400 text-sm mb-4">Please wait until host gets update.</p>
+                    <a href="./week.html" class="inline-block px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-lg hover-glow smooth-transition text-sm">
+                        Submit Project
+                    </a>
+                </div>
+               
+            </div>
+           
+            <!-- Update Note -->
+            <div class="bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border border-cyan-500/30 rounded-xl p-6 text-center">
+                <div class="flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="text-gray-300">
+                        ✅ <strong class="text-cyan-400">Easy to Update:</strong> You can update weekly assignment links inside the HTML by changing href="#" to your actual links.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ==================== CONTACT US SECTION ==================== -->
+    <section id="contact" class="py-20 px-4 bg-slate-900/50">
+        <div class="container mx-auto max-w-6xl">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    Contact <span class="text-cyan-400">Us</span>
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mx-auto mb-6"></div>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Have questions? Reach out to us or chat anonymously with our bot support.
+                </p>
+            </div>
+           
+            <!-- Mode Toggle -->
+            <div class="flex justify-center mb-8">
+                <div class="inline-flex bg-slate-800 border border-cyan-500/30 rounded-lg p-1">
+                    <button id="normal-mode-btn" class="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-md smooth-transition">
+                        Normal Mode
+                    </button>
+                    <button id="anon-mode-btn" class="px-6 py-2 text-gray-400 font-medium rounded-md hover:text-white smooth-transition">
+                        Anonymous Mode
+                    </button>
+                </div>
+            </div>
+           
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Normal Contact Form -->
+                <div id="normal-form" class="gradient-border rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-white mb-6">Send us a Message</h3>
+                   
+                    <!-- OPTION 1: Using FormSubmit (Sends directly to your email) -->
+                    <form action="https://formsubmit.co/kg0416@srmist.edu.in" method="POST" class="space-y-6">
+                        <!-- FormSubmit Configuration (Hidden Fields) -->
+                        <input type="hidden" name="_subject" value="New Robotics Course Message">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="text" name="_honey" style="display:none">
+                       
+                        <div>
+                            <label class="block text-gray-300 mb-2 font-medium">Name</label>
+                            <input type="text" name="name" placeholder="Your Name" required class="w-full px-4 py-3 bg-slate-800 border border-cyan-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 smooth-transition">
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 mb-2 font-medium">Email</label>
+                            <input type="email" name="email" placeholder="your.email@example.com" required class="w-full px-4 py-3 bg-slate-800 border border-cyan-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 smooth-transition">
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 mb-2 font-medium">Message</label>
+                            <textarea rows="5" name="message" placeholder="Type your message here..." required class="w-full px-4 py-3 bg-slate-800 border border-cyan-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 smooth-transition resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-lg hover-glow smooth-transition">
+                            Send Message
+                        </button>
+                       
+                        <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3 text-center">
+                            <p class="text-cyan-400 text-sm">📧 Messages will be sent to: <strong>kg0416@srmist.edu.in</strong></p>
+                        </div>
+                    </form>
+                   
+                    <!--
+                    ==================== IMPORTANT SETUP INSTRUCTIONS ====================
+                   
+                    FIRST TIME SETUP (Required):
+                    1. Open this website in your browser
+                    2. Fill out the contact form with ANY test message
+                    3. Click "Send Message"
+                    4. FormSubmit will send you a CONFIRMATION EMAIL to kg0416@srmist.edu.in
+                    5. Open that email and click the ACTIVATION LINK
+                    6. Done! Now all future form submissions will come to your email automatically!
+                   
+                    After activation, you'll receive:
+                    ✅ Sender's name
+                    ✅ Sender's email
+                    ✅ Their message
+                    ✅ Timestamp
+                   
+                    NOTE: The first submission is just for activation. After that, all messages
+                    will be delivered instantly to your inbox!
+                    -->
+                   
+                </div>
+               
+                <!-- Anonymous Bot Chat -->
+                <div id="anon-chat" class="hidden gradient-border rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
+                        <svg class="w-6 h-6 text-cyan-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                        </svg>
+                        Anonymous Bot Chat
+                    </h3>
+                   
+                    <!-- Chat Messages -->
+                    <div id="chat-messages" class="bg-slate-800/50 border border-cyan-500/20 rounded-lg p-4 mb-4 h-64 overflow-y-auto space-y-3">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div class="bg-slate-700/50 px-4 py-2 rounded-lg rounded-tl-none">
+                                <p class="text-gray-300 text-sm">Hi! Ask anything anonymously ✅</p>
+                            </div>
+                        </div>
+                       
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div class="bg-slate-700/50 px-4 py-2 rounded-lg rounded-tl-none">
+                                <p class="text-gray-300 text-sm">I'm here to help with your robotics questions!</p>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <!-- Chat Input -->
+                    <form id="bot-chat-form" class="flex space-x-2">
+                        <input type="text" id="bot-input" placeholder="Type your anonymous message..." required class="flex-1 px-4 py-3 bg-slate-800 border border-cyan-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 smooth-transition">
+                        <button type="submit" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-lg hover-glow smooth-transition">
+                            Send
+                        </button>
+                    </form>
+                   
+                    <div class="mt-4 text-center text-sm text-gray-400">
+                        <svg class="w-4 h-4 inline text-green-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Your identity is completely anonymous
+                    </div>
+                </div>
+               
+                <!-- Info Card -->
+                <div class="gradient-border rounded-2xl p-8 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-white mb-6">Get in Touch</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0 glow-cyan">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Email</h4>
+                                <p class="text-gray-400 text-sm"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d9abb6bbb6adb0baaa99acb7b0afbcabaab0ada0f7bcbdac">kg0416@srmist.edu.in</a></p>
+                            </div>
+                        </div>
+                       
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center flex-shrink-0 glow-blue">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Location</h4>
+                                <p class="text-gray-400 text-sm">SRM University, SRM Nagar</p>
+                            </div>
+                        </div>
+                       
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0 glow-cyan">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Office Hours</h4>
+                                <p class="text-gray-400 text-sm">Mon-Sun: 08:00 AM - 01:00 AM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-slate-900 border-t border-cyan-500/20 py-12 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <!-- Column 1 -->
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-lg flex items-center justify-center glow-cyan">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-cyan-400">RoboTech</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Introduction to Robotics - Building the future with intelligent machines.
+                    </p>
+                </div>
+               
+                <!-- Column 2 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-cyan-400 smooth-transition text-sm">Home</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-cyan-400 smooth-transition text-sm">About Robotics</a></li>
+                        <li><a href="#assignments" class="text-gray-400 hover:text-cyan-400 smooth-transition text-sm">Weekly Assignments</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-cyan-400 smooth-transition text-sm">Contact Us</a></li>
+                    </ul>
+                </div>
+               
+                <!-- Column 3 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Instructor</h4>
+                    <p class="text-gray-400 text-sm mb-4">
+                        <strong class="text-white">Prof. Ambigai</strong><br>
+                        Department of Mechanical Engineering
+                    </p>
+                    <div class="flex space-x-3">
+                        <a href="https://www.linkedin.com/in/karthikg27/" class="w-10 h-10 bg-slate-800 border border-cyan-500/30 rounded-lg flex items-center justify-center hover:bg-cyan-500/10 hover:border-cyan-500 smooth-transition">
+                            <svg class="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/karthikeyanGnanasekaran" class="w-10 h-10 bg-slate-800 border border-cyan-500/30 rounded-lg flex items-center justify-center hover:bg-cyan-500/10 hover:border-cyan-500 smooth-transition">
+                            <svg class="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+           
+            <!-- Bottom Bar -->
+            <div class="border-t border-cyan-500/20 pt-8 text-center">
+                <p class="text-gray-400 text-sm">
+                    © 2026 Introduction to Robotics. All rights reserved. | Designed with <span class="text-cyan-400">❤</span> for future roboticists.
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+       
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+       
+        // Contact Mode Toggle
+        const normalModeBtn = document.getElementById('normal-mode-btn');
+        const anonModeBtn = document.getElementById('anon-mode-btn');
+        const normalForm = document.getElementById('normal-form');
+        const anonChat = document.getElementById('anon-chat');
+       
+        normalModeBtn.addEventListener('click', () => {
+            normalForm.classList.remove('hidden');
+            anonChat.classList.add('hidden');
+            normalModeBtn.classList.add('bg-gradient-to-r', 'from-cyan-500', 'to-blue-600', 'text-white');
+            normalModeBtn.classList.remove('text-gray-400');
+            anonModeBtn.classList.remove('bg-gradient-to-r', 'from-cyan-500', 'to-blue-600', 'text-white');
+            anonModeBtn.classList.add('text-gray-400');
+        });
+       
+        anonModeBtn.addEventListener('click', () => {
+            normalForm.classList.add('hidden');
+            anonChat.classList.remove('hidden');
+            anonModeBtn.classList.add('bg-gradient-to-r', 'from-cyan-500', 'to-blue-600', 'text-white');
+            anonModeBtn.classList.remove('text-gray-400');
+            normalModeBtn.classList.remove('bg-gradient-to-r', 'from-cyan-500', 'to-blue-600', 'text-white');
+            normalModeBtn.classList.add('text-gray-400');
+        });
+       
+        // ==================== BOT CHAT FUNCTIONALITY ====================
+        const botChatForm = document.getElementById('bot-chat-form');
+        const botInput = document.getElementById('bot-input');
+        const chatMessages = document.getElementById('chat-messages');
+       
+        // Bot responses database
+        const botResponses = {
+        // Greetings
+        "hello": "Hello! How can I help you with robotics today?",
+        "hi": "Hi there! What would you like to know about robotics?",
+        "hey": "Hey! Ask me anything related to robotics assignments or concepts.",
+        "good morning": "Good morning! Ready to learn some robotics today?",
+        "good evening": "Good evening! Need help with your robotics assignment?",
+
+        // General Help
+        "help": "I can help you with sensors, actuators, robot types, DOF, kinematics, assignments, and mini project topics!",
+        "what can you do": "I can guide you with robotics concepts and help you find the right assignment section quickly.",
+        "syllabus": "Your weekly topics are organized in the Assignments section. Check Week 1 to Week 6 cards!",
+        "notes": "Quick Notes are available in the Notes section. You can revise fast from there!",
+
+        // Robotics Basics
+        "robot": "A robot is a programmable machine that can perform tasks automatically using sensors, controllers, and actuators.",
+        "robotics": "Robotics is a mix of electronics, mechanics, and coding used to build intelligent machines.",
+        "automation": "Automation means doing tasks automatically using machines and control systems.",
+        "types of robots": "Common robot types are Industrial robots, Mobile robots, Humanoid robots, Drones, and Medical robots.",
+        "industrial robot": "Industrial robots are used in factories for welding, assembly, packaging, and material handling.",
+        "mobile robot": "Mobile robots can move around using wheels/legs. Examples: delivery robots, robot vacuum, rovers.",
+
+        // Components
+        "sensor": "Sensors detect changes in the environment. Week 3 covers proximity, IR, ultrasonic, and camera sensors.",
+        "sensors": "Sensors help robots sense distance, temperature, light, motion, and objects around them.",
+        "actuator": "Actuators make robots move using motors, servos, pneumatics, or hydraulics. Week 4 covers this!",
+        "actuators": "Actuators convert electrical signals into movement (like wheels, arms, grippers).",
+        "controller": "A controller is the brain of the robot. Examples: Arduino, Raspberry Pi, PLC, microcontrollers.",
+        "microcontroller": "Microcontrollers control robot tasks like reading sensors and driving motors. Arduino is a common example.",
+        "arduino": "Arduino is beginner-friendly for robotics projects. It controls sensors, motors, and simple automation.",
+        "raspberry pi": "Raspberry Pi is a mini computer used for robotics with vision, AI, and advanced processing.",
+
+        // DOF and Joints
+        "dof": "DOF means Degrees of Freedom. It tells how many independent movements a robot can make.",
+        "degrees of freedom": "Degrees of Freedom (DOF) is the number of independent motions a robot has.",
+        "robot joints": "Common robot joints: Revolute (rotational) and Prismatic (sliding). These are important for robot arms.",
+        "revolute joint": "A revolute joint allows rotation like a hinge.",
+        "prismatic joint": "A prismatic joint allows linear sliding motion.",
+
+        // Kinematics
+        "kinematics": "Robot kinematics (Week 5) studies robot motion without forces: forward and inverse kinematics.",
+        "forward kinematics": "Forward kinematics finds the end-effector position from given joint angles.",
+        "inverse kinematics": "Inverse kinematics finds joint angles needed to reach a target position.",
+
+        // Motion and Motors
+        "motor": "Motors provide movement. DC motors are simple, while servo motors provide precise angle control.",
+        "dc motor": "DC motors are used for wheels and movement, usually controlled using motor drivers.",
+        "servo motor": "Servo motors can rotate to specific angles and are useful for robot arms and grippers.",
+        "stepper motor": "Stepper motors move in steps and are used in precise motion systems like CNC and 3D printers.",
+        "pwm": "PWM (Pulse Width Modulation) controls motor speed by varying the ON/OFF duty cycle.",
+
+        // Sensors specific
+        "ultrasonic sensor": "Ultrasonic sensor measures distance using sound waves (common example: HC-SR04).",
+        "ir sensor": "IR sensors are used for line following and obstacle detection in basic robotics.",
+        "lidar": "LiDAR uses laser pulses to map distance and surroundings, used in self-driving and advanced robots.",
+        "camera": "Cameras are used for computer vision tasks like object detection and tracking.",
+
+        // Control Systems
+        "open loop": "Open-loop control works without feedback. Example: motor runs for fixed time.",
+        "closed loop": "Closed-loop control uses feedback for accuracy. Example: using sensors to correct motor movement.",
+        "feedback": "Feedback helps a robot adjust its actions based on sensor readings.",
+
+        // Assignments & Portfolio Navigation
+        "assignment": "All weekly assignments are in the Assignments section above. Each week has links and status.",
+        "assignments": "Go to Weekly Assignments section. You can open PDF links and submission links there.",
+        "week 1": "Week 1 covers Introduction to Robotics and basic robot components.",
+        "week 2": "Week 2 covers Robot Joints and Degrees of Freedom (DOF).",
+        "week 3": "Week 3 covers Sensors and their applications in robots.",
+        "week 4": "Week 4 covers Actuators and Motors.",
+        "week 5": "Week 5 covers Robot Kinematics (Forward and Inverse).",
+        "week 6": "Week 6 is Mini Project / Report Submission and progress tracking.",
+        "where is pdf": "Check Assignments section → click 'View PDF' for the week you need.",
+        "submission": "Submission links are available inside each week card. If not added, it will show as placeholder.",
+        "deadline": "Deadlines are usually weekly. Please verify with your faculty announcement or timetable.",
+
+        // Mini Project Ideas
+        "project": "Mini project update is in Week 6. Submit your progress report along with your output screenshots.",
+        "mini project": "Mini project ideas: Line follower robot, Obstacle avoiding robot, Smart parking system, Robotic arm demo.",
+        "line follower": "Line follower uses IR sensors to follow a black line path. It's a classic beginner robotics project.",
+        "obstacle avoiding": "Obstacle avoiding robots use ultrasonic/IR sensors to detect objects and move around them.",
+        "robotic arm": "Robotic arms use joints + DOF + kinematics. Servos are commonly used in beginner arms.",
+        "drone": "Drones are flying robots controlled using sensors like gyroscope and accelerometer (IMU).",
+
+        // Career / Learning support (student-friendly)
+        "how to study": "Best way: revise notes + complete weekly assignments + practice basics like sensors and motors.",
+        "resources": "Use your class notes + assignments section. If needed, I can suggest free learning resources too.",
+        "coding": "Robotics coding usually uses C/C++ for Arduino, Python for Raspberry Pi, and sometimes ROS for advanced work.",
+        "ros": "ROS (Robot Operating System) is used for advanced robotics. Not needed for basics but great for future learning.",
+
+        // Contact / Bot Mode
+        "contact": "You can contact using the Contact Us section. Normal form is for official messages.",
+        "anonymous": "Anonymous mode is useful for asking doubts without revealing your name (UI only).",
+        "bot": "I’m your student helper bot 🤖 Ask concepts or assignment-related doubts!",
+        "who are you": "I’m your Robotics Student Assistant Bot 🤖 helping with concepts and assignments.",
+
+        // Appreciation
+        "thanks": "You're welcome! Feel free to ask anything else about robotics.",
+        "thank you": "You're welcome! Happy to help with your robotics journey!",
+        "ok": "Cool ✅ Ask your next doubt!",
+        "nice": "Awesome 😄 Want help with Week assignments or robotics concepts?",
+
+        // Default
+        "default": "Interesting question! Try asking about sensors, actuators, DOF, kinematics, or 'Week 1/2/3...'."
+        };
+
+       
+        // Function to add message to chat
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start space-x-3';
+           
+            if (isUser) {
+                messageDiv.classList.add('justify-end');
+                messageDiv.innerHTML = `
+                    <div class="bg-gradient-to-r from-cyan-600 to-blue-700 px-4 py-2 rounded-lg rounded-tr-none max-w-xs">
+                        <p class="text-white text-sm">${text}</p>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div class="bg-slate-700/50 px-4 py-2 rounded-lg rounded-tl-none max-w-xs">
+                        <p class="text-gray-300 text-sm">${text}</p>
+                    </div>
+                `;
+            }
+           
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+       
+        // Function to get bot response
+        function getBotResponse(userMessage) {
+            const lowerMessage = userMessage.toLowerCase();
+           
+            // Check for keywords
+            for (const [keyword, response] of Object.entries(botResponses)) {
+                if (lowerMessage.includes(keyword)) {
+                    return response;
+                }
+            }
+           
+            return botResponses.default;
+        }
+       
+        // Handle bot chat form submission
+        botChatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+           
+            const userMessage = botInput.value.trim();
+           
+            if (userMessage === '') return;
+           
+            // Add user message
+            addMessage(userMessage, true);
+           
+            // Clear input
+            botInput.value = '';
+           
+            // Show typing indicator and bot response
+            setTimeout(() => {
+                const response = getBotResponse(userMessage);
+                addMessage(response, false);
+            }, 800);
+        });
+       
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+       
+        // Simple fade-in animation on scroll (optional enhancement)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+       
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+       
+        // Observe all cards for animation
+        document.querySelectorAll('.gradient-border').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease-out';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
